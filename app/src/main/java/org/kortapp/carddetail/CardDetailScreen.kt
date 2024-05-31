@@ -5,6 +5,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -33,19 +34,19 @@ fun CardDetailScreen(
     val boundsTransform = { _: Rect, _: Rect -> tween<Rect>(1400) }
 
     when (state) {
-        is State.DisplayDetails -> Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
+        is State.DisplayDetails -> Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             with(LocalSharedTransitionScope.current!!) {
 
                 AsyncImage(
-                    modifier = Modifier.sharedBounds(
+                    modifier = Modifier/*.sharedBounds(
                         sharedContentState = rememberSharedContentState(key = state.debitCard.id),
                         animatedVisibilityScope =  LocalAnimatedContentScope.current!!,
                         boundsTransform = boundsTransform,
                         resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-                    ).size(150.dp),
+                    )*/.fillMaxWidth(),
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(state.debitCard.imageUrl)
-                        //.crossfade(true)
+                        .crossfade(true)
                         .placeholderMemoryCacheKey(state.debitCard.id) //  same key as shared element key
                         .memoryCacheKey(state.debitCard.id) // same key as shared element key
                         .build(),

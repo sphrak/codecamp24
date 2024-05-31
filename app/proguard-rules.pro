@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn jakarta.servlet.ServletContainerInitializer
+-dontwarn java.lang.Module
+-dontwarn java.lang.module.ModuleDescriptor
+-dontwarn javax.naming.Context
+-dontwarn javax.naming.InitialContext
+-dontwarn javax.naming.NamingException
+-dontwarn org.codehaus.commons.compiler.CompileException
+-dontwarn org.codehaus.janino.ClassBodyEvaluator

@@ -35,7 +35,12 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            isDebuggable = true
+            isDebuggable = false
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         release {
             isMinifyEnabled = true
@@ -53,6 +58,11 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs += listOf(
+            "-P",
+            // If this is false the Layout Inspector has limited access to the composeables
+            "plugin:androidx.compose.compiler.plugins.kotlin:sourceInformation=true"
+        )
     }
 
     buildFeatures {
@@ -62,11 +72,12 @@ android {
     composeCompiler {
         enableStrongSkippingMode = true
         // https://issuetracker.google.com/issues/338842143
-        includeSourceInformation.set(true)
+        //includeSourceInformation.set(true)
     }
+
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/{AL2.0,LGPL2.1,INDEX.LIST}"
         }
     }
 }
@@ -108,6 +119,7 @@ dependencies {
     implementation("io.ktor:ktor-client-android:2.3.11")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.1")
+    implementation("ch.qos.logback:logback-classic:1.4.5")
 
     ksp(libs.androidx.hilt.compiler)
 

@@ -27,6 +27,8 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.fragment.compose.AndroidFragment
+import androidx.fragment.compose.rememberFragmentState
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,6 +38,8 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
 import org.kortapp.card.CardRoute
+import org.kortapp.card.boundsTransform
+import org.kortapp.carddetail.CardDetailFragment
 import org.kortapp.carddetail.CardDetailScreen
 import org.kortapp.ui.theme.KortAppTheme
 
@@ -91,22 +95,22 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 composable<CardDetailRoute> {
-                                    val id = it.toRoute<CardDetailRoute>().id
-
                                     CompositionLocalProvider(
                                         LocalAnimatedContentScope provides this,
                                     ) {
-                                        // TODO
-//                                    AndroidFragment<CardDetailFragment>(
-//                                        modifier = Modifier.Companion.sharedBounds(
-//                                            sharedContentState = this@SharedTransitionLayout.rememberSharedContentState(key = "key-$id"),
-//                                            animatedVisibilityScope =  this,
-//                                            enter = EnterTransition.None,
-//                                            exit = ExitTransition.None,
-//                                        )
-//                                    )
 
-                                        CardDetailScreen()
+                                        val id = it.toRoute<CardDetailRoute>().id
+
+                                        AndroidFragment<CardDetailFragment>(
+                                            modifier = Modifier.sharedBounds(
+                                                sharedContentState = rememberSharedContentState(key = id),
+                                                animatedVisibilityScope =  LocalAnimatedContentScope.current!!,
+                                                boundsTransform = boundsTransform,
+                                                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                                            )
+                                        )
+
+                                        // CardDetailScreen()
                                     }
                                 }
                             }
